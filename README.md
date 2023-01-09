@@ -49,7 +49,7 @@ keyDownEvent() occurs when we press the key, and we make a calculation with the 
 ```
 With this we can add movement to the project:
 
-![gif](./GIF/nave.gif)
+![gif](./GIF/movement.gif)
 
 ### 2 - Adding Shadows.
 
@@ -133,4 +133,4 @@ We update the Draw task with what we defined previously:
 
 With this we can add shadows to the project:
 
-![img](./img/shadow.PNG)
+![img](./img/shadow.jpg)
