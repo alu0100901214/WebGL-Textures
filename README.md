@@ -2,7 +2,7 @@
 
 In this activity we have to add textures to the cubes in the scene. In addition to adding the features of the Pawn movement and shadows activities.
 
-## Adding textures to the scene cubes.
+## Adding textures to the cubes.
 
 First we need to define the assets for the use of textures in Retreivals.cs, we change AssetType to add a new enum to identify the texture.
 
