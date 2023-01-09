@@ -133,4 +133,4 @@ We update the Draw task with what we defined previously:
 
 With this we can add shadows to the project:
 
-![img](./img/shadow.jpg)
+![img](./img/shadow.JPG)
