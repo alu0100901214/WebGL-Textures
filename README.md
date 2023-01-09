@@ -4,6 +4,104 @@ In this activity we have to add textures to the cubes in the scene. In addition 
 
 ## Adding textures to the scene cubes.
 
+First we need to define the assets for the use of textures in Retreivals.cs, we change AssetType to add a new enum to identify the texture.
+
+```
+public enum AssetType : byte {
+        StaticMesh,
+        Texture
+    }
+```
+
+And we add the RetrievedTexture class, here the json of the level will be loaded:
+
+```
+public class RetrievedTexture : RetrievedAsset {
+        public byte[] Rgba32DecodedImage; 
+        public int Width{get; set;}
+        public int Height{get; set;}
+    }
+```
+
+We add in level.json a new list with the textures of the scene, in addition we add a new attribute to the actors of the level to indicate its texture.
+
+```
+"texture_list" : [
+        {
+            "file" : "assets/greendragon.jpg",
+            "id" : "tex1"
+        },
+
+        {
+            "file" : "assets/greendragon.jpg",
+            "id" : "tex2"
+        }
+
+    ],
+```
+
+```
+{
+            "id" : "aprop2",
+            "type" : "staticmesh",
+
+            "sm" : "cube",
+            "shadow" : true,
+
+            "enabled" : true,
+            "position" : [10.0,0.0,10.0],
+            "orientation" : {
+                "axis" : [0.0,1.0,0.0],
+                "angle" : 0.0
+            },
+            "scale" : [1.0,1.0,1.0],
+            "basecolor" : [1.0,0.0,0.0,1.0],
+            "texture" : "tex1",
+            "collisionbox" : true
+
+
+        }
+```
+
+Now we create a new shader for the textures in fsSourceTexture, and we modify fsSourceTexture to add a new sampler2D uniform representing an element that shows the texture.
+
+We also have a new buffer for textures "TextureBuffers" with texture information.
+
+Draw's task changes, now it sends commands that are independent of the actors in the scene. Then we have two loops on the actors, the first for those using colored materials, and the second for textures (Later we will add another loop for the shadows):
+
+```
+public async Task Draw(){
+        await this._context.BeginBatchAsync();
+        await preparePipeLine();
+        await updateLightUniforms(); 
+        await objectIndependentUniforms();
+
+        // Now, loop on objects with programBaseColor
+        await this._context.UseProgramAsync(this.programBaseColor);
+        await this.getAttributeLocationsBaseColor();
+        foreach (var keyval in ActiveLevel.ActorCollection){
+          GameFramework.Actor actor = keyval.Value;
+          await actorDependentOperations(actor,GameFramework.MaterialType.BaseColor);
+        }
+
+        // Now, loop on objects with programTexture
+        await this._context.UseProgramAsync(this.programTexture);
+        await this.getAttributeLocationsTexture();
+        foreach (var keyval in ActiveLevel.ActorCollection){
+          GameFramework.Actor actor = keyval.Value;
+          await actorDependentOperations(actor,GameFramework.MaterialType.Texture);
+        }
+
+        await this._context.EndBatchAsync();
+    }
+```
+
+The actorDependentOperations task concentrates all operations in the context of WebGL.
+
+Example of the implemented texture:
+
+![img](./img/texture.JPG)
+
 ## Adding the activities of other projects:
 
 ### 1 - Pawn movement.
@@ -94,7 +192,7 @@ The getAttributeLocations() function changes and now they are separated, so we c
    }
 ```
 
-We create a task called shadowOperations() similar to an existing one in the project called actorDependentOperations():
+We create a task called shadowOperations() similar to actorDependentOperations() that concentrates all operations in the context of WebGL for shadows:
 
 ```
     private async Task shadowOperations(GameFramework.Actor actor, GameFramework.MaterialType materialType){
@@ -119,7 +217,7 @@ We create a task called shadowOperations() similar to an existing one in the pro
     }
 ```
 
-We update the Draw task with what we defined previously:
+We update the Draw task with a new loop:
 
 ```
         // Loop on objects with programShadow
