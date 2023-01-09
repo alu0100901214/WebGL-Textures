@@ -102,34 +102,6 @@ Example of the implemented texture:
 
 ![img](./img/texture.JPG)
 
-## Applies textures to the different elements of the demo: ship, floor and objects. Create a texture that repeats on the ground.
-
-We modify the prepareBuffers() task by adding the texture coordinates:
-
-```
-        if(retMesh.uv!=null){
-            await this._context.BindBufferAsync(BufferType.ARRAY_BUFFER,buffers.TexCoordBuffer);
-            float[] textureCoordinates = {
-                2, 2, 0, 0, 0, 2, 
-                0, 0, 2, 2, 2, 0, 
-                2, 0, 0, 2, 2, 2, 
-                2, 0, 0, 2, 2, 2, 
-                0, 0, 2, 2, 2, 0, 
-                2, 2, 0, 0, 0, 2, 
-                2, 2, 2, 0, 0, 0, 
-                0, 0, 0, 2, 2, 2, 
-                2, 0, 0, 0, 0, 2, 
-                2, 0, 0, 0, 0, 2, 
-                0, 0, 0, 2, 2, 2, 
-                2, 2, 2, 0, 0, 0 };
-            await this._context.BufferDataAsync(BufferType.ARRAY_BUFFER, textureCoordinates, BufferUsageHint.STATIC_DRAW);
-            }
-```
-
-Example of the implemented textures:
-
-![img](./img/textureFloor.JPG)
-
 ## Adding the activities of other projects:
 
 ### 1 - Pawn movement.
