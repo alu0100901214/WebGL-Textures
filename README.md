@@ -161,19 +161,11 @@ private const string fsShadowSource=@"
         }";
 ```
 
-We define a new program that renders the shadows with the correct color among other variables:
+We define a new program that renders the shadows:
 
 ```
     private WebGLShader shadowFragmentShader;
     private WebGLProgram shadowProgram;
-
-    private int shadowPositionAttribLocation;
-    private int shadowNormalAttribLocation;
-    private int shadowColorAttribLocation;
-    
-    private WebGLUniformLocation shadowProjectionUniformLocation;
-    private WebGLUniformLocation shadowModelViewUniformLocation;
-    private WebGLUniformLocation shadowNormalTransformUniformLocation;
 ```
 
 The getAttributeLocations() function changes and now they are separated, so we create one for the shadows:
